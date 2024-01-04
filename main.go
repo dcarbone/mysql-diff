@@ -33,7 +33,7 @@ func main() {
 			&cli.StringSliceFlag{
 				Name:     flagConn,
 				Aliases:  []string{"C"},
-				Usage:    "A single MySQL connection with structure: \"addr=$addr user=$user pass=$pass db=$db[ db=$dbX]\"",
+				Usage:    "A single MySQL connection with structure: \"addr=$addr user=$user pass=$pass db=$db[ db=$dbX][ label=$label]\"",
 				Required: true,
 			},
 		},
