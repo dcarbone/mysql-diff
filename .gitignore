@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+tmp/
 vendor/
 .DS_Store
 *.json

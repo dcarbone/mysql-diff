@@ -22,7 +22,7 @@ func diffRun(cctx *cli.Context) error {
 
 	tw := table.NewWriter()
 
-	hdr := table.Row{""}
+	hdr := table.Row{}
 	for _, n := range summaries.DatabaseNames() {
 		hdr = append(hdr, n)
 	}
@@ -30,13 +30,13 @@ func diffRun(cctx *cli.Context) error {
 	tw.AppendHeader(hdr)
 
 	for _, tn := range summaries.AllTableNames() {
-		row := table.Row{tn}
+		row := table.Row{}
 		for _, cs := range summaries {
 			for _, db := range cs.Databases {
 				if _, ok := db.FindTable(tn); ok {
-					row = append(row, "O")
+					row = append(row, tn)
 				} else {
-					row = append(row, "X")
+					row = append(row, "")
 				}
 			}
 		}
