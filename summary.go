@@ -178,7 +178,7 @@ func summarizeDatabase(ctx context.Context, conn *sql.DB, db string) (*databaseS
 
 	for _, tbl := range dbsum.Tables {
 		if err = addColumnSummaries(ctx, conn, db, tbl); err != nil {
-			return nil, fmt.Errorf("error analyzing database %q table %q columns: %w", db, tbl.Name, err)
+			return nil, fmt.Errorf("error summarizing database %q table %q columns: %w", db, tbl.Name, err)
 		}
 	}
 
@@ -198,7 +198,7 @@ func summarizeConnections(ctx context.Context, conns []*mysqlConn) (connectionSu
 		for _, db := range cn.Databases {
 			dbStruct, err := summarizeDatabase(ctx, cn.Conn, db)
 			if err != nil {
-				return nil, fmt.Errorf("error analyzing database %q in server %q: %w", db, cn.Address, err)
+				return nil, fmt.Errorf("error summarizing database %q in server %q: %w", db, cn.Address, err)
 			}
 			connStruct.Databases = append(connStruct.Databases, dbStruct)
 		}
