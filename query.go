@@ -44,6 +44,8 @@ func openConnections(connConfigs []connConfig) (mysqlConns, error) {
 		// attempt to open connection
 		mconn, err := mysql.NewConnector(mcfg)
 		if err != nil {
+			// close any opened connections
+			conns.Close()
 			return nil, fmt.Errorf("error opening mysql connector: %w", err)
 		}
 
