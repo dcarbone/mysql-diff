@@ -1,5 +1,5 @@
 # mysql-diff
-Little utility to help produce a diff between two mysql schemas
+Little utility to help summarize one or more mysql schemas
 
 # Usage
 
