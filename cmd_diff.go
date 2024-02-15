@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io"
 
-	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/urfave/cli/v2"
 )
 
@@ -15,35 +15,30 @@ func diffRun(cctx *cli.Context) error {
 
 	defer conns.Close()
 
+	formatter, err := BuildFormatter(cctx)
+	if err != nil {
+		return fmt.Errorf("error building formatter: %w", err)
+	}
+
+	output, err := BuildOutput(cctx)
+	if err != nil {
+		return fmt.Errorf("error building output: %w", err)
+	}
+
+	outputWriter, err := output.Writer()
+	if err != nil {
+		return fmt.Errorf("error opening writer for output: %w", err)
+	}
+
+	// if this is a closeable writer, queue up close.
+	if wc, ok := outputWriter.(io.Closer); ok {
+		defer func() { _ = wc.Close() }()
+	}
+
 	summaries, err := summarizeConnections(cctx.Context, conns)
 	if err != nil {
 		return fmt.Errorf("error building summaries: %w", err)
 	}
 
-	tw := table.NewWriter()
-
-	hdr := table.Row{}
-	for _, n := range summaries.DatabaseNames() {
-		hdr = append(hdr, n)
-	}
-
-	tw.AppendHeader(hdr)
-
-	for _, tn := range summaries.AllTableNames() {
-		row := table.Row{}
-		for _, cs := range summaries {
-			for _, db := range cs.Databases {
-				if _, ok := db.FindTable(tn); ok {
-					row = append(row, tn)
-				} else {
-					row = append(row, "")
-				}
-			}
-		}
-		tw.AppendRow(row)
-	}
-
-	fmt.Println(tw.Render())
-
-	return nil
+	return formatter.Render(summaries, outputWriter)
 }

@@ -12,7 +12,7 @@ go build .
 
 You may also add the `-pretty` flag to the end to produced formatted JSON.
 
-## Print Table Diff to Console
+## Generate Diff
 
 ```shell
 go build .
