@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/go-sql-driver/mysql v1.9.3
-	github.com/jedib0t/go-pretty/v6 v6.6.7
+	github.com/jedib0t/go-pretty/v6 v6.6.9
 	github.com/urfave/cli/v2 v2.27.7
 )
 
